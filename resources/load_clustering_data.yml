@@ -1,0 +1,41 @@
+# The main job for test_bundle.
+resources:
+  jobs:
+    load_clustering_data_job:
+      name: load_clustering_data_job
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: load_player_clustering_data
+
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/basket_intelligence_bundle/load_data.py
+            parameters: ["kmeans_player", "${var.season}"]
+          
+        - task_key: load_team_clustering_data
+
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/basket_intelligence_bundle/load_data.py
+            parameters: ["kmeans_team_shooting", "${var.season}"]
+
+      schedule:
+        quartz_cron_expression: '0 0 7 * * ?' # daily at 7am
+        timezone_id: UTC
+        pause_status: UNPAUSED
+
+      # A list of task execution environment specifications that can be referenced by tasks of this job.
+      environments:
+        - environment_key: default
+
+          # Full documentation of this spec can be found at:
+          # https://docs.databricks.com/api/workspace/jobs/create#environments-spec
+          spec:
+            #client: "1"
+            environment_version: "3"
+            dependencies:
+              - ../dist/*.whl
