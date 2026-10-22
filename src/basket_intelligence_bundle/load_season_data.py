@@ -8,7 +8,7 @@ def load_data(data_source: str, season: str):
     #define the unity catalog and schema before loading
     spark.sql('USE CATALOG basket_intelligence;')
 
-    spark.sql('CREATE SCHEMA IF NOT EXISTS teams;')
+    spark.sql('CREATE SCHEMA IF NOT EXISTS default;')
 
     loader.load_data(
         data_source=data_source,
