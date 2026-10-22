@@ -1,0 +1,37 @@
+# This is a Databricks asset bundle definition for basket_intelligence_bundle.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: basket_intelligence_bundle
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+# Bundle variables are provided from the environment in CI (BUNDLE_VAR_*).
+variables:
+  season:
+    description: "The nba season from which the data should be loaded"
+    default: "2027"
+  prod_user_name:
+    description: "Existing production deployment owner (BUNDLE_VAR_prod_user_name)"
+
+targets:
+  dev:
+    # Development mode creates a separate copy with paused schedules.
+    mode: development
+    default: true
+    # Set DATABRICKS_HOST or use a local Databricks CLI profile.
+
+  prod:
+    mode: production
+    workspace:
+      # Reuse the owner's existing production deployment path.
+      root_path: /Workspace/Users/${var.prod_user_name}/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: ${var.prod_user_name}
+        level: CAN_MANAGE
