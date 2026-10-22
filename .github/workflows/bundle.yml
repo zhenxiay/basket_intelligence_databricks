@@ -30,7 +30,7 @@ jobs:
           enable-cache: false
       - uses: databricks/setup-cli@8de769ec2543ee05e456ee2121350efc7efc4bda # v1.22.1
         with:
-          version: '0.289.1' # Supports bundle plan
+          version: '0.289.2' # Supports bundle plan and fixes expired Terraform verification key
       - name: Build wheel
         shell: bash
         run: |
