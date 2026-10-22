@@ -34,11 +34,7 @@ jobs:
       - name: Build wheel
         shell: bash
         run: |
-          if ! uv build --wheel >"$RUNNER_TEMP/uv-build.log" 2>&1; then
-            echo 'Wheel build failed (output withheld).'
-            exit 1
-          fi
-          echo 'Wheel build passed (output withheld).'
+          uv build --wheel
       - name: Check required secrets
         shell: bash
         env:
@@ -57,12 +53,7 @@ jobs:
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           BUNDLE_VAR_prod_user_name: ${{ secrets.DATABRICKS_PROD_USER_NAME }}
         run: |
-          # CLI output may contain private paths or identities. Never print or upload it.
-          if ! databricks bundle validate --target prod >"$RUNNER_TEMP/bundle-validate.log" 2>&1; then
-            echo 'Production bundle validation failed (output withheld).'
-            exit 1
-          fi
-          echo 'Production bundle validation passed (output withheld).'
+          databricks bundle validate --target prod
       - name: Plan production bundle
         shell: bash
         env:
@@ -79,8 +70,4 @@ jobs:
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           BUNDLE_VAR_prod_user_name: ${{ secrets.DATABRICKS_PROD_USER_NAME }}
         run: |
-          if ! databricks bundle deploy --target prod >"$RUNNER_TEMP/bundle-deploy.log" 2>&1; then
-            echo 'Production bundle deployment failed (output withheld).'
-            exit 1
-          fi
-          echo 'Production bundle deployment passed (output withheld).'
+          databricks bundle deploy --target prod
