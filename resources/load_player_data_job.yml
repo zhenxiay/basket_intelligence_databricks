@@ -1,0 +1,40 @@
+# The main job for load_player_data.
+resources:
+  jobs:
+    load_player_data_job:
+      name: load_player_data_job
+
+      #email_notifications:
+      #  on_failure:
+      #    - your_email@example.com
+
+      tasks:
+        - task_key: load_player_per_game
+
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/basket_intelligence_bundle/load_data.py
+            parameters: ["per_game", "${var.season}"]
+          
+        - task_key: load_player_adv_stats
+
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/basket_intelligence_bundle/load_data.py
+            parameters: ["adv_stats", "${var.season}"]
+
+      schedule:
+        quartz_cron_expression: '0 0 7 * * ?' # daily at 7am
+        timezone_id: CET
+        pause_status: UNPAUSED
+
+      # A list of task execution environment specifications that can be referenced by tasks of this job.
+      environments:
+        - environment_key: default
+
+          # Full documentation of this spec can be found at:
+          # https://docs.databricks.com/api/workspace/jobs/create#environments-spec
+          spec:
+            environment_version: "3"
+            dependencies:
+              - ../dist/*.whl
