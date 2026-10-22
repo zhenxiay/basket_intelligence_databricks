@@ -13,14 +13,14 @@ resources:
 
           environment_key: default
           spark_python_task:
-            python_file: ../src/basket_intelligence_bundle/load_data.py
+            python_file: ../src/basket_intelligence_bundle/load_clustering_data.py
             parameters: ["kmeans_player", "${var.season}"]
           
         - task_key: load_team_clustering_data
 
           environment_key: default
           spark_python_task:
-            python_file: ../src/basket_intelligence_bundle/load_data.py
+            python_file: ../src/basket_intelligence_bundle/load_clustering_data.py
             parameters: ["kmeans_team_shooting", "${var.season}"]
 
       schedule:
