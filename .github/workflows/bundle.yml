@@ -70,11 +70,14 @@ jobs:
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
           BUNDLE_VAR_prod_user_name: ${{ secrets.DATABRICKS_PROD_USER_NAME }}
         run: |
-          if ! databricks bundle plan --target prod >"$RUNNER_TEMP/bundle-plan.log" 2>&1; then
-            echo 'Production bundle plan failed (output withheld).'
-            exit 1
+          if databricks bundle plan --target prod >"$RUNNER_TEMP/bundle-plan.log" 2>&1; then
+            echo 'Production bundle plan passed (output withheld).'
+          else
+            status=$?
+            echo 'Production bundle plan failed. CLI output follows:'
+            cat "$RUNNER_TEMP/bundle-plan.log"
+            exit "$status"
           fi
-          echo 'Production bundle plan passed (output withheld).'
       - name: Deploy production bundle
         if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
         shell: bash
