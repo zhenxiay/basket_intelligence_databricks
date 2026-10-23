@@ -12,7 +12,7 @@ def load_data(data_source: str, season: str):
 
     loader.load_data(
         data_source=data_source,
-        db_type='fabric_lakehouse',
+        db_type='unity_catalog',
         name=data_source,
     )
 
