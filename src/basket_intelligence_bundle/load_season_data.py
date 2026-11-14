@@ -1,13 +1,11 @@
 import sys
 from BasketIntelligence.load_season_data import LoadSeasonData
-from BasketIntelligence.utils.create_spark_session import get_spark
 
 def load_data(data_source: str, season: str):
 
     loader = LoadSeasonData(season,"project","BasketIntelligence")
 
     #define the unity catalog and schema before loading
-    spark = get_spark()
     spark.sql('USE CATALOG basket_intelligence;')
 
     spark.sql('CREATE SCHEMA IF NOT EXISTS default;')
