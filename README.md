@@ -4,7 +4,7 @@ This repository contains a Databricks asset bundle for the data-loading jobs in 
 
 ## Local development
 
-Install Databricks CLI **0.289.1**, uv **0.8.24**, and Python **3.12**. Authenticate to your workspace with a local Databricks CLI profile (for example, `databricks auth login`) or set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` in your shell. Do not add workspace URLs or credentials to tracked files.
+Install Databricks CLI **0.289.2**, uv **0.8.24**, and Python **3.12**. Authenticate to your workspace with a local Databricks CLI profile (for example, `databricks auth login`) or set `DATABRICKS_HOST` and `DATABRICKS_TOKEN` in your shell. Do not add workspace URLs or credentials to tracked files.
 
 ```sh
 databricks bundle validate --target dev

@@ -13,14 +13,14 @@ resources:
 
           environment_key: default
           spark_python_task:
-            python_file: ../src/basket_intelligence_bundle/load_data.py
+            python_file: ../src/basket_intelligence_bundle/load_season_data.py
             parameters: ["per_game", "${var.season}"]
           
         - task_key: load_player_adv_stats
 
           environment_key: default
           spark_python_task:
-            python_file: ../src/basket_intelligence_bundle/load_data.py
+            python_file: ../src/basket_intelligence_bundle/load_season_data.py
             parameters: ["adv_stats", "${var.season}"]
 
       schedule:
